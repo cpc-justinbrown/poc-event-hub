@@ -10,8 +10,8 @@ import json
 secrets = json.load(open('..\secrets.json'))
 blob_conn_str = secrets["receiver"]["blob_conn_str"]
 blob_name = secrets["receiver"]["blob_name"]
-eventhub_listener_conn_str = secrets["receiver"]["eventhub_listener_conn_str"]
-eventhub_name = secrets["receiver"]["eventhub_name"]
+event_hub_receive_conn_str = secrets["receiver"]["event_hub_receive_conn_str"]
+event_hub_name = secrets["receiver"]["event_hub_name"]
 
 async def on_event(partition_context, event):
     # Print the event data.
@@ -26,7 +26,7 @@ async def main():
     checkpoint_store = BlobCheckpointStore.from_connection_string(blob_conn_str, blob_name)
 
     # Create a consumer client for the event hub.
-    client = EventHubConsumerClient.from_connection_string(eventhub_listener_conn_str, consumer_group="$Default", eventhub_name=eventhub_name, checkpoint_store=checkpoint_store)
+    client = EventHubConsumerClient.from_connection_string(event_hub_receive_conn_str, consumer_group="$Default", eventhub_name=event_hub_name, checkpoint_store=checkpoint_store)
     async with client:
         # Call the receive method. Read from the beginning of the partition (starting_position: "-1")
         await client.receive(on_event=on_event,  starting_position="-1")

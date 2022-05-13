@@ -7,14 +7,14 @@ import json
 
 # Load secrets from file.
 secrets = json.load(open('..\secrets.json'))
-conn_str = secrets["sender"]["conn_str"]
-eventhub_name = secrets["sender"]["event_hub_name"]
+event_hub_send_conn_str = secrets["sender"]["event_hub_send_conn_str"]
+event_hub_name = secrets["sender"]["event_hub_name"]
 
 async def run():
     # Create a producer client to send messages to the event hub.
     # Specify a connection string to your event hubs namespace and
     # the event hub name.
-    producer = EventHubProducerClient.from_connection_string(conn_str=conn_str, eventhub_name=eventhub_name,transport_type=TransportType.AmqpOverWebsocket)
+    producer = EventHubProducerClient.from_connection_string(conn_str=event_hub_send_conn_str, eventhub_name=event_hub_name,transport_type=TransportType.AmqpOverWebsocket)
     async with producer:
         # Create a batch.
         event_data_batch = await producer.create_batch()

@@ -8,14 +8,14 @@ Proof of concept for sending messages to and receiving messages from an Event Hu
 ```json
 {
     "sender": {
-        "conn_str": "Endpoint=sb://<EVENT HUB NAMESPACE>.servicebus.windows.net/;SharedAccessKeyName=<SEND POLICY NAME>;SharedAccessKey=<SEND POLICY KEY>",
+        "event_hub_send_conn_str": "Endpoint=sb://<EVENT HUB NAMESPACE>.servicebus.windows.net/;SharedAccessKeyName=<SEND POLICY NAME>;SharedAccessKey=<SEND POLICY KEY>",
         "event_hub_name": "<EVENT HUB INSTANCE NAME>"
     },
     "receiver": {
         "blob_conn_str": "DefaultEndpointsProtocol=https;AccountName=<STORAGE ACCOUNT NAME>;AccountKey=<STORAGE ACCOUNT ACCESS KEY>;EndpointSuffix=core.windows.net",
         "blob_name": "event-hub-checkpoint",
-        "eventhub_listener_conn_str": "Endpoint=sb://<EVENT HUB NAMESPACE>.servicebus.windows.net/;SharedAccessKeyName=<RECEIVE POLICY NAME>;SharedAccessKey=<RECEIVE POLICY KEY>",
-        "eventhub_name": "<EVENT HUB INSTANCE NAME>"
+        "event_hub_receive_conn_str": "Endpoint=sb://<EVENT HUB NAMESPACE>.servicebus.windows.net/;SharedAccessKeyName=<RECEIVE POLICY NAME>;SharedAccessKey=<RECEIVE POLICY KEY>",
+        "event_hub_name": "<EVENT HUB INSTANCE NAME>"
     }
 }
 ```
