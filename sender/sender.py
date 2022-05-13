@@ -3,14 +3,17 @@
 import asyncio
 from azure.eventhub.aio import EventHubProducerClient
 from azure.eventhub import EventData,TransportType
-import logging
+import json
+
+# Load secrets from file.
+secrets = json.load(open('..\secrets.json'))
+conn_str = secrets["sender"]["conn_str"]
+eventhub_name = secrets["sender"]["event_hub_name"]
 
 async def run():
     # Create a producer client to send messages to the event hub.
     # Specify a connection string to your event hubs namespace and
     # the event hub name.
-    conn_str = "Endpoint=sb://proofofconcepteventhubnamespace.servicebus.windows.net/;SharedAccessKeyName=Sender;SharedAccessKey=ADs+MmGUEX59jMLOXlasqJLPxc0Fcm2EROVZJ9GXma4="
-    eventhub_name = "proofofconcepteventhub"
     producer = EventHubProducerClient.from_connection_string(conn_str=conn_str, eventhub_name=eventhub_name,transport_type=TransportType.AmqpOverWebsocket)
     async with producer:
         # Create a batch.
