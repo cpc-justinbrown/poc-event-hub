@@ -1,7 +1,9 @@
 # poc-event-hub
 Proof of concept for sending messages to and receiving messages from an Event Hub Instance.
 
-This codebase was adapted from [Send or receive events from Azure Event Hubs using Python (latest) - Azure Event Hubs | Microsoft Docs](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-python-get-started-send).
+This codebase was adapted from:
+- [Send or receive events from Azure Event Hubs using Python (latest) - Azure Event Hubs | Microsoft Docs](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-python-get-started-send)
+- [Tutorial: Send Event Hubs data to data warehouse - Event Grid - Azure Event Grid | Microsoft Docs](https://docs.microsoft.com/en-us/azure/event-grid/event-grid-event-hubs-integration)
 
 ## Installation
 1. Clone the repo locally.
