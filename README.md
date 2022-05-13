@@ -51,3 +51,9 @@ Add the CPChem Root CA to Python's certificate store given by `certifi.where()`.
 
 ## terraform
 This provisions an Event Hub Namespace with one Event Hub Instance. It also provisions a Storage Account and a blob Container for the Event Hub to use for maintaining a processing checkpoint.
+
+### Prerequisites
+
+```python
+pip install azure-storage-blob
+```

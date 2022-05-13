@@ -20,7 +20,7 @@ resource "azurerm_storage_container" "sac_checkpoint" {
 resource "azurerm_storage_container" "sac_capture" {
   name                  = "event-hub-capture"
   storage_account_name  = azurerm_storage_account.sa.name
-  container_access_type = "private"
+  container_access_type = "blob"
 }
 
 resource "azurerm_eventhub_namespace" "ehn" {
@@ -108,6 +108,11 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "egstes" {
   name                = "EventHubEventSubscription"
   system_topic        = azurerm_eventgrid_system_topic.egst.name
   resource_group_name = azurerm_resource_group.rg.name
+
+  retry_policy {
+    event_time_to_live = 1
+    max_delivery_attempts = 1
+  }
 
   azure_function_endpoint {
     function_id = "${azurerm_linux_function_app.af.id}/functions/EventGridTrigger"
