@@ -1,5 +1,3 @@
-# https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-python-get-started-send
-
 import asyncio
 from azure.eventhub.aio import EventHubProducerClient
 from azure.eventhub import EventData,TransportType
@@ -29,12 +27,4 @@ async def run():
 
 loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
-
-# The following were needed to see errors like the following:
-# INFO:uamqp.c_uamqp:b'Failed to verify trusted certificate in chain'
-# INFO:uamqp.c_uamqp:b'Unable to verify server certificate against custom server trusted certificate'
-#loop.set_debug(True)
-#logging.basicConfig(level=logging.DEBUG)
-# Resolution was to add CPChem root CA cert to the cert file given by: certifi.where()
-
 loop.run_until_complete(run())

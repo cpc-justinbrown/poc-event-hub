@@ -1,5 +1,3 @@
-# https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-python-get-started-send
-
 import asyncio
 from os import name
 from azure.eventhub.aio import EventHubConsumerClient

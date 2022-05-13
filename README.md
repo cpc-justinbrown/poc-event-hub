@@ -1,6 +1,8 @@
 # poc-event-hub
 Proof of concept for sending messages to and receiving messages from an Event Hub Instance.
 
+This codebase was adapted from [Send or receive events from Azure Event Hubs using Python (latest) - Azure Event Hubs | Microsoft Docs](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-python-get-started-send).
+
 ## Installation
 1. Clone the repo locally.
 2. Create a secrets.json file with the necessary prerequisites.
@@ -42,6 +44,8 @@ pip install azure.eventhub
 ```
 
 A SAS policy at the Event Hub Namespace with Send claim.
+
+Add the CPChem Root CA to the file given by `certifi.where()`.
 
 ## terraform
 This provisions an Event Hub Namespace with one Event Hub Instance. It also provisions a Storage Account and a blob Container for the Event Hub to use for maintaining a processing checkpoint.
