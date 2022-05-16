@@ -8,10 +8,10 @@ import tempfile
 def main(event: func.EventGridEvent):
     fileUrl = event.get_json()["fileUrl"]
     logging.info("Reading Avro file from: {fileUrl}".format(fileUrl=fileUrl))
-    
-    with tempfile.TemporaryFile() as file:
+
+    with tempfile.NamedTemporaryFile(delete=False) as file:
         file.write(requests.get(fileUrl).content)
-        reader = DataFileReader(open(file,'rb'), DatumReader())
+        reader = DataFileReader(open(file.name,'rb'), DatumReader())
         logging.info("Schema: {schema}".format(schema=reader.meta))
 
     # result = json.dumps({
