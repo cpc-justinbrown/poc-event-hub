@@ -38,8 +38,9 @@ resource "azurerm_eventhub" "eh" {
   message_retention   = 1
 
   capture_description {
-    enabled  = true
-    encoding = "Avro"
+    enabled             = true
+    encoding            = "Avro"
+    skip_empty_archives = true
 
     destination {
       name                = "EventHubArchive.AzureBlockBlob"
@@ -90,9 +91,9 @@ resource "azurerm_linux_function_app" "af" {
   }
 
   tags = {
-    "hidden-link: /app-insights-conn-string" = azurerm_application_insights.appi.connection_string
+    "hidden-link: /app-insights-conn-string"         = azurerm_application_insights.appi.connection_string
     "hidden-link: /app-insights-instrumentation-key" = azurerm_application_insights.appi.instrumentation_key
-    "hidden-link: /app-insights-resource-id" = azurerm_application_insights.appi.id
+    "hidden-link: /app-insights-resource-id"         = azurerm_application_insights.appi.id
   }
 }
 
@@ -110,13 +111,13 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "egstes" {
   resource_group_name = azurerm_resource_group.rg.name
 
   retry_policy {
-    event_time_to_live = 1
+    event_time_to_live    = 1
     max_delivery_attempts = 1
   }
 
   azure_function_endpoint {
-    function_id = "${azurerm_linux_function_app.af.id}/functions/EventGridTrigger"
-    max_events_per_batch = 1
+    function_id                       = "${azurerm_linux_function_app.af.id}/functions/EventGridTrigger"
+    max_events_per_batch              = 1
     preferred_batch_size_in_kilobytes = 64
   }
 }

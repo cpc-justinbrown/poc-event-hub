@@ -11,8 +11,13 @@ def main(event: func.EventGridEvent):
 
     with tempfile.NamedTemporaryFile(delete=False) as file:
         file.write(requests.get(fileUrl).content)
+        file.close()
         reader = DataFileReader(open(file.name,'rb'), DatumReader())
         logging.info("Schema: {schema}".format(schema=reader.meta))
+        for record in reader:
+            logging.info("Record: {record}".format(record=record))
+            logging.info("Body: {body}".format(body=record["Body"]))
+
 
     # result = json.dumps({
     #     'id': event.id,
