@@ -4,6 +4,7 @@ Proof of concept for sending messages to and receiving messages from an Event Hu
 This codebase was adapted from:
 - [Send or receive events from Azure Event Hubs using Python (latest) - Azure Event Hubs | Microsoft Docs](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-python-get-started-send)
 - [Tutorial: Send Event Hubs data to data warehouse - Event Grid - Azure Event Grid | Microsoft Docs](https://docs.microsoft.com/en-us/azure/event-grid/event-grid-event-hubs-integration)
+- [azure-event-hubs/samples/e2e/EventHubsCaptureEventGridDemo at master · Azure/azure-event-hubs · GitHub](https://github.com/Azure/azure-event-hubs/tree/master/samples/e2e/EventHubsCaptureEventGridDemo)
 
 ## Installation
 1. Clone the repo locally.
@@ -17,7 +18,7 @@ This codebase was adapted from:
     },
     "receiver": {
         "blob_conn_str": "DefaultEndpointsProtocol=https;AccountName=<STORAGE ACCOUNT NAME>;AccountKey=<STORAGE ACCOUNT ACCESS KEY>;EndpointSuffix=core.windows.net",
-        "blob_name": "event-hub-checkpoint",
+        "blob_container_name": "event-hub-checkpoint",
         "event_hub_receive_conn_str": "Endpoint=sb://<EVENT HUB NAMESPACE>.servicebus.windows.net/;SharedAccessKeyName=<RECEIVE POLICY NAME>;SharedAccessKey=<RECEIVE POLICY KEY>",
         "event_hub_name": "<EVENT HUB INSTANCE NAME>"
     }

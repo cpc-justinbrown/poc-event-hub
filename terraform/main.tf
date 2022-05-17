@@ -51,6 +51,24 @@ resource "azurerm_eventhub" "eh" {
   }
 }
 
+resource "azurerm_storage_management_policy" "samp" {
+  storage_account_id = azurerm_storage_account.sa.id
+
+  rule {
+    name    = "PurgeWeekOldAvro"
+    enabled = true
+    filters {
+      prefix_match = ["${azurerm_storage_container.sac_capture.name}/${lower(azurerm_eventhub_namespace.ehn.name)}/${lower(azurerm_eventhub.eh.name)}"]
+      blob_types   = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_modification_greater_than = 7
+      }
+    }
+  }
+}
+
 resource "azurerm_service_plan" "asp" {
   name                = "asEventHub"
   resource_group_name = azurerm_resource_group.rg.name
