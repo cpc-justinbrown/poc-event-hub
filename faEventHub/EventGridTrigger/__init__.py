@@ -15,15 +15,17 @@ def main(event: func.EventGridEvent):
         file.write(requests.get(fileUrl).content)
         file.close()
         reader = DataFileReader(open(file.name,'rb'), DatumReader())
-        logging.info("Schema: {schema}".format(schema=reader.meta))
-        logging.info("Environment: {environ}".format(environ=os.environ))
-        try:
-            pyodbc.connect(os.environ['SQLAZURECONNSTR_CONNECTIONSTRING'])
-        except Exception as e:
-            logging.error(str(e))
+        #logging.info("Schema: {schema}".format(schema=reader.meta))
+        #logging.info("Environment: {environ}".format(environ=os.environ))
         for record in reader:
-            logging.info("Record: {record}".format(record=record))
+            #logging.info("Record: {record}".format(record=record))
             logging.info("Body: {body}".format(body=record["Body"]))
+            try:
+                with pyodbc.connect(os.environ['SQLAZURECONNSTR_CONNECTIONSTRING']) as connection:
+                    cursor = connection.cursor()
+                    cursor.execute('insert into [Message]([Message]) values (?)', record["Body"].decode('UTF-8'))
+            except Exception as e:
+                logging.error(str(e))
 
     # result = json.dumps({
     #     'id': event.id,

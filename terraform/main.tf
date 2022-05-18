@@ -168,11 +168,18 @@ resource "azurerm_mssql_server" "sql" {
   }
 }
 
-resource "azurerm_mssql_firewall_rule" "sqlfw" {
+resource "azurerm_mssql_firewall_rule" "sqlfw_cpc" {
   name             = "CPChem"
   server_id        = azurerm_mssql_server.sql.id
   start_ip_address = var.cpchem_ip_address
   end_ip_address   = var.cpchem_ip_address
+}
+
+resource "azurerm_mssql_firewall_rule" "sqlfw_az" {
+  name             = "AllowAllWindowsAzureIps"
+  server_id        = azurerm_mssql_server.sql.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
 }
 
 resource "azurerm_mssql_elasticpool" "sqlep" {
