@@ -41,6 +41,7 @@ resource "azurerm_eventhub" "eh" {
     enabled             = true
     encoding            = "Avro"
     skip_empty_archives = true
+    interval_in_seconds = 60
 
     destination {
       name                = "EventHubArchive.AzureBlockBlob"
@@ -99,6 +100,16 @@ resource "azurerm_linux_function_app" "af" {
     "XDG_CACHE_HOME"                 = "/tmp/.cache"
   }
 
+  connection_string {
+    name  = "CONNECTIONSTRING"
+    type  = "SQLAzure"
+    value = "Driver={ODBC Driver 17 for SQL Server};Server=tcp:sqleventhub.database.windows.net,1433;Database=sqldbEventHub;Authentication=ActiveDirectoryMsi;"
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
   site_config {
     application_insights_connection_string = azurerm_application_insights.appi.connection_string
     application_insights_key               = azurerm_application_insights.appi.instrumentation_key
@@ -138,4 +149,57 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "egstes" {
     max_events_per_batch              = 1
     preferred_batch_size_in_kilobytes = 64
   }
+}
+
+resource "azurerm_mssql_server" "sql" {
+  name                         = "sqleventhub"
+  resource_group_name          = azurerm_resource_group.rg.name
+  location                     = azurerm_resource_group.rg.location
+  version                      = "12.0"
+  minimum_tls_version          = "1.2"
+  administrator_login          = "sqladmEventHub"
+  administrator_login_password = "P@ssw0rd"
+
+  azuread_administrator {
+    azuread_authentication_only = true
+    login_username              = "justinlbrown@justinlbrown.onmicrosoft.com"
+    object_id                   = var.justinlbrown_object_id
+    tenant_id                   = var.tenant_id
+  }
+}
+
+resource "azurerm_mssql_firewall_rule" "sqlfw" {
+  name             = "CPChem"
+  server_id        = azurerm_mssql_server.sql.id
+  start_ip_address = var.cpchem_ip_address
+  end_ip_address   = var.cpchem_ip_address
+}
+
+resource "azurerm_mssql_elasticpool" "sqlep" {
+  name                = "sqlepEventHub"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  server_name         = azurerm_mssql_server.sql.name
+  max_size_gb         = 4.8828125
+
+  sku {
+    name     = "BasicPool"
+    tier     = "Basic"
+    capacity = 50
+  }
+
+  per_database_settings {
+    min_capacity = 0
+    max_capacity = 5
+  }
+}
+
+resource "azurerm_mssql_database" "sqldb" {
+  name                 = "sqldbEventHub"
+  server_id            = azurerm_mssql_server.sql.id
+  elastic_pool_id      = azurerm_mssql_elasticpool.sqlep.id
+  max_size_gb          = 1
+  sku_name             = "ElasticPool"
+  storage_account_type = "Local"
+  zone_redundant       = false
 }

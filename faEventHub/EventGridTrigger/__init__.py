@@ -4,6 +4,8 @@ from avro.datafile import DataFileReader
 from avro.io import DatumReader
 import requests
 import tempfile
+import pyodbc
+import os
 
 def main(event: func.EventGridEvent):
     fileUrl = event.get_json()["fileUrl"]
@@ -14,10 +16,14 @@ def main(event: func.EventGridEvent):
         file.close()
         reader = DataFileReader(open(file.name,'rb'), DatumReader())
         logging.info("Schema: {schema}".format(schema=reader.meta))
+        logging.info("Environment: {environ}".format(environ=os.environ))
+        try:
+            pyodbc.connect(os.environ['SQLAZURECONNSTR_CONNECTIONSTRING'])
+        except Exception as e:
+            logging.error(str(e))
         for record in reader:
             logging.info("Record: {record}".format(record=record))
             logging.info("Body: {body}".format(body=record["Body"]))
-
 
     # result = json.dumps({
     #     'id': event.id,
