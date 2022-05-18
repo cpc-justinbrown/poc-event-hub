@@ -18,9 +18,13 @@ async def run():
         event_data_batch = await producer.create_batch()
 
         # Add events to the batch.
-        event_data_batch.add(EventData('First event'))
-        event_data_batch.add(EventData('Second event'))
-        event_data_batch.add(EventData('Third event'))
+        print("Enter messages (or hit Return to quit):")
+        while True:
+            message = input("> ")
+            if message:
+                event_data_batch.add(EventData(message))
+            else:
+                break
 
         # Send the batch of events to the event hub.
         await producer.send_batch(event_data_batch)
