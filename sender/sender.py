@@ -2,6 +2,7 @@ import asyncio
 from azure.eventhub.aio import EventHubProducerClient
 from azure.eventhub import EventData,TransportType
 import json
+from datetime import datetime
 
 # Load secrets from file.
 secrets = json.load(open('..\secrets.json'))
@@ -22,7 +23,11 @@ async def run():
         while True:
             message = input("> ")
             if message:
-                event_data_batch.add(EventData(message))
+                body = {
+                    "message": message,
+                    "timestamp": datetime.utcnow().isoformat('T',timespec='milliseconds')
+                }
+                event_data_batch.add(EventData(json.dumps(body)))
             else:
                 break
 

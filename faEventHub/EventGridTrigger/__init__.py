@@ -6,6 +6,7 @@ import requests
 import tempfile
 import pyodbc
 import os
+import json
 
 def main(event: func.EventGridEvent):
     fileUrl = event.get_json()["fileUrl"]
@@ -20,10 +21,13 @@ def main(event: func.EventGridEvent):
         for record in reader:
             #logging.info("Record: {record}".format(record=record))
             logging.info("Body: {body}".format(body=record["Body"]))
+            body = json.loads(record["Body"].decode('UTF-8'))
             try:
                 with pyodbc.connect(os.environ['SQLAZURECONNSTR_CONNECTIONSTRING']) as connection:
                     cursor = connection.cursor()
-                    cursor.execute('insert into [Message]([Message]) values (?)', record["Body"].decode('UTF-8'))
+                    cursor.execute('insert into [Message]([Message],[Timestamp]) values (?,?)',
+                        body["message"],
+                        body["timestamp"])
             except Exception as e:
                 logging.error(str(e))
 
