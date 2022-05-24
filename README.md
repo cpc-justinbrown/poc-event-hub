@@ -8,6 +8,7 @@ This codebase was adapted from:
 
 ## Architecture Overview
 ![Architecture](docs/Architecture.png)
+
 A message producer generates messages and sends them to the Event Hub.  The Event Hub captures ingested events to a storage account once per minute and generates a corresponding event.
 
 A message consumer subscribes to the Event Hub to listen for new messages. A Function App handles new capture file events by inspecting the file for events to log to a database.
