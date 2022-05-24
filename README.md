@@ -8,6 +8,11 @@ This codebase was adapted from:
 
 ## Architecture Overview
 ![Architecture](docs/Architecture.png)
+A message producer generates messages and sends them to the Event Hub.  The Event Hub captures ingested events to a storage account once per minute and generates a corresponding event.
+
+A message consumer subscribes to the Event Hub to listen for new messages. A Function App handles new capture file events by inspecting the file for events to log to a database.
+
+A Power BI report displays analytics from the database.
 
 ## Installation
 1. Clone the repo locally.
@@ -28,8 +33,8 @@ This codebase was adapted from:
 }
 ```
 
-## receiver
-Receives and displays messages from the Event Hub Instance.
+## listener
+Subscribes to the Event Hub Instance consumer group and displays received messages.
 
 ### Prerequisites
 ```python
@@ -38,7 +43,7 @@ pip install azure.eventhub
 pip install azure-eventhub-checkpointstoreblob-aio
 ```
 
-A SAS policy at the Event Hub Namespace with Listen claim.
+A SAS policy at the Event Hub Namespace with `Listen` claim.
 
 ## sender
 Sends messages to the Event Hub Instance.
@@ -49,7 +54,7 @@ pip install asyncio
 pip install azure.eventhub
 ```
 
-A SAS policy at the Event Hub Namespace with Send claim.
+A SAS policy at the Event Hub Namespace with `Send` claim.
 
 Add the CPChem Root CA to Python's certificate store given by `certifi.where()`.
 
