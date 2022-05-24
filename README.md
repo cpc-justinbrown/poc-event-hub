@@ -6,6 +6,9 @@ This codebase was adapted from:
 - [Tutorial: Send Event Hubs data to data warehouse - Event Grid - Azure Event Grid | Microsoft Docs](https://docs.microsoft.com/en-us/azure/event-grid/event-grid-event-hubs-integration)
 - [azure-event-hubs/samples/e2e/EventHubsCaptureEventGridDemo at master · Azure/azure-event-hubs · GitHub](https://github.com/Azure/azure-event-hubs/tree/master/samples/e2e/EventHubsCaptureEventGridDemo)
 
+## Architecture Overview
+![Architecture](docs/Architecture.png)
+
 ## Installation
 1. Clone the repo locally.
 2. Create a secrets.json file with the necessary prerequisites.
