@@ -7,7 +7,7 @@ import json
 secrets = json.load(open('..\secrets.json'))
 blob_conn_str = secrets["receiver"]["blob_conn_str"]
 blob_container_name = secrets["receiver"]["blob_container_name"]
-event_hub_receive_conn_str = secrets["receiver"]["event_hub_receive_conn_str"]
+event_hub_listen_conn_str = secrets["receiver"]["event_hub_listen_conn_str"]
 event_hub_name = secrets["receiver"]["event_hub_name"]
 
 async def on_event(partition_context, event):
@@ -32,7 +32,7 @@ async def main():
 
     # Create a consumer client for the event hub.
     client = EventHubConsumerClient.from_connection_string(
-        event_hub_receive_conn_str,
+        event_hub_listen_conn_str,
         consumer_group="$Default",
         eventhub_name=event_hub_name,
         checkpoint_store=checkpoint_store)

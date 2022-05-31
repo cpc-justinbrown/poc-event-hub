@@ -52,6 +52,22 @@ resource "azurerm_eventhub" "eh" {
   }
 }
 
+resource "azurerm_eventhub_authorization_rule" "ehar_sender" {
+  name                = "Sender"
+  namespace_name      = azurerm_eventhub_namespace.ehn.name
+  eventhub_name       = azurerm_eventhub.eh.name
+  resource_group_name = azurerm_resource_group.rg.name
+  send                = true
+}
+
+resource "azurerm_eventhub_authorization_rule" "ehar_listener" {
+  name                = "Listener"
+  namespace_name      = azurerm_eventhub_namespace.ehn.name
+  eventhub_name       = azurerm_eventhub.eh.name
+  resource_group_name = azurerm_resource_group.rg.name
+  listen              = true
+}
+
 resource "azurerm_storage_management_policy" "samp" {
   storage_account_id = azurerm_storage_account.sa.id
 
