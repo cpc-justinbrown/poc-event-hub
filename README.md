@@ -17,7 +17,14 @@ A Power BI report displays analytics from the database.
 
 ## Installation
 1. Clone the repo locally.
-2. Create a secrets.json file with the necessary prerequisites.
+1. Deploy the terraform infrastructure. (partial)
+1. Deploy the Azure Function.
+1. Deploy the terraform infrastructure. (complete)
+1. Deploy the SQL database script.
+1. Create two shared access policies at the Event Hub Namespace resource.
+    * Sender with Send access.
+    * Listener with Listen access.
+1. Create a secrets.json file with the necessary prerequisites.
 
 ```json
 {
