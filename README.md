@@ -72,3 +72,20 @@ This provisions an Event Hub Namespace with one Event Hub Instance. It also prov
 ```python
 pip install azure-storage-blob
 ```
+
+# Event Hub Recommendations
+
+* Create SendOnly and ListenOnly policies for the event publisher and consumer, respectively.
+* When using the SDK to send events to Event Hubs, ensure the exceptions thrown by the retry policy (EventHubsException or OperationCancelledException) are properly caught.
+* In high-throughput scenarios, use batched events.
+* Every consumer can read events from one to 32 partitions.
+* When developing new applications, use EventProcessorClient (.NET and Java) or EventHubConsumerClient (Python and JavaScript) as the client SDK.
+* As part of your solution-wide availability and disaster recovery strategy, consider enabling the Event Hubs geo disaster-recovery option.
+* When a solution has a large number of independent event publishers, consider using Event Publishers for fine-grained access control.
+* Don't publish events to a specific partition.
+* When publishing events frequently, use the AMQP protocol when possible.
+* The number of partitions reflect the degree of downstream parallelism you can achieve.
+* Ensure each consuming application uses a separate consumer group and only one active receiver per consumer group is in place.
+* When using the Capture feature, carefully consider the configuration of the time window and file size, especially with low event volumes.
+
+[Event Hubs and reliability - Checklist] (https://docs.microsoft.com/en-us/azure/architecture/framework/services/messaging/event-hubs/reliability#checklist)
